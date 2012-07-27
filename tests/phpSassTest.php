@@ -65,24 +65,19 @@ class PHPSass_TestCase extends PHPUnit_Framework_TestCase {
 
     $syntax = explode('.', $input);
     $syntax = array_pop($syntax);
-    try {
-      $settings = $settings + array(
-        'style' => 'nested',
-        'cache' => FALSE,
-        'syntax' => $syntax,
-        'debug' => FALSE,
-        'debug_info' => FALSE,
-        'callbacks' => array(
-          'debug' => array($this, 'sassParserDebug'),
-          'warn' => array($this, 'sassParserWarning'),
-        ),
-      );
-      $parser = new SassParser($settings);
-      $result = $parser->toCss($input);
-    }
-    catch (Exception $e) {
-      $this->fail('Exception occured when compiling file' . ': ' . (string) $e);
-    }
+    $settings = $settings + array(
+      'style' => 'nested',
+      'cache' => FALSE,
+      'syntax' => $syntax,
+      'debug' => FALSE,
+      'debug_info' => FALSE,
+      'callbacks' => array(
+        'debug' => array($this, 'sassParserDebug'),
+        'warn' => array($this, 'sassParserWarning'),
+      ),
+    );
+    $parser = new SassParser($settings);
+    $result = $parser->toCss($input);
 
     $compare = file_get_contents($output);
     if ($compare === FALSE) {
